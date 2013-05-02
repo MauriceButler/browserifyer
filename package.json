@@ -1,0 +1,28 @@
+{
+  "name": "browserifyer",
+  "version": "0.0.1",
+  "description": "Automagicly browserify your scripts as you edit them.",
+  "main": "browserifyer",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MauriceButler/browserifyer.git"
+  },
+  "keywords": [
+    "browserify",
+    "watcher",
+    "automatic"
+  ],
+  "author": "Maurice Butler <maurice.butler@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": ">=1.1.1",
+    "browserify" : ">=2.13.2"
+  },
+  "preferGlobal": "true",
+  "bin": {
+    "browserifyer": "index.js"
+  }
+}
