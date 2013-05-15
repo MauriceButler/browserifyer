@@ -18,15 +18,19 @@ browserifer [options]
 
 Options:
 
-  -h, --help               output usage information
+  -h, --help               Output usage information
   
-  -V, --version            output the version number
+  -V, --version            Output the version number
   
   -v, --verbose            Verbose output
   
   -w, --watch [path]       Watch Path [default ./]
   
+  -i, --input [fileName]   Input File [default ./main.js]
+  
   -o, --output [fileName]  Output File [default ./main.browser.js]
+  
+  -t, --throttle [milliseconds]  Minimum time between processing (milliseconds) [default 300]
   
   
   

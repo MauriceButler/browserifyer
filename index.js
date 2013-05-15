@@ -6,25 +6,23 @@ var program = require('commander'),
     path = require('path'),
     packageJson = require('./package.json'),
     watchPath = './',
-    outputFile = './main.browser.js';
+    inputFile = './main.js',
+    outputFile = './main.browser.js',
+    throttle = 300,
+    throttleTimeout,
+    relativeInputFile;
     
 program
-  .version(packageJson.version)
-  .option('-v, --verbose', 'Verbose output')
-  // TODO: Add debud flag to browserify call
-  // .option('-d, --debug', 'Browserify in debug mode')
-  .option('-w, --watch [path]', 'Watch Path [default ./]')
-  .option('-o, --output [fileName]', 'Output File [default ./main.browser.js]')
-  .parse(process.argv);
+    .version(packageJson.version)
+    .option('-v, --verbose', 'Verbose output')
+    // TODO: Add debud flag to browserify call
+    // .option('-d, --debug', 'Browserify in debug mode')
+    .option('-w, --watch [path]', 'Watch Path [default ' + watchPath +']',  String, watchPath)
+    .option('-i, --input [fileName]', 'Input File [default ' + inputFile +']',  String, inputFile)
+    .option('-o, --output [fileName]', 'Output File [default ' + outputFile +']',  String, outputFile)
+    .option('-t, --throttle [milliseconds]', 'Minimum time between processing (milliseconds) [default ' + throttle +']', Number, throttle)
+    .parse(process.argv);
 
-
- if(program.watch){
-    watchPath = program.watch;
- }
-
- if(program.output){
-    outputFile = program.output;
- }
 
 function hasError(error){
     if(error){
@@ -41,26 +39,44 @@ function log(message){
 
 function bundle(error, data) {
     if (!hasError(error)) {
-        fs.writeFile(outputFile, data, function(){
+        fs.writeFile(program.output, data, function(){
             if (!hasError(error)) {
-                log('Updated: ' + outputFile);
+                log('Browserfied ' + inputFile + ' -> ' + outputFile);
             }
         });
     }
 }
 
-log('Watching ' + watchPath + ' for changes.');
-log('Output file is ' + outputFile);
+function tryToProcess(filename){
+    var now = new Date();
+    
+    clearTimeout(throttleTimeout);
+    throttleTimeout = setTimeout(function(){
+            processFile(filename);
+        }, program.throttle);
+}
+
+function processFile(filename) {
+    if(filename){
+        log('Processing triggered by save on: ' + filename);
+    }
+
+    var result = browserify(relativeInputFile);
+    result.bundle(bundle).on('error', hasError);
+}
+
+relativeInputFile = path.relative(__dirname, path.join(program.watch, program.input));
+console.log(relativeInputFile);
+log('Watching ' + program.watch + ' for changes.');
+log('Output file is ' + program.output);
+tryToProcess();
 
 fs.watch(watchPath, function(eventType, filename){
     if(eventType !== 'change' || 
         path.extname(filename).toLowerCase() !== '.js' ||
-        filename.toLowerCase() === path.basename(outputFile).toLowerCase()){
+        filename.toLowerCase() === path.basename(program.output).toLowerCase()){
         return;
     }
-        
-    var relativePath = path.relative(__dirname, path.join(watchPath, filename));
-        result = browserify(relativePath);
-        
-    result.bundle(bundle).on('error', hasError);
+
+    tryToProcess(filename);
 });
