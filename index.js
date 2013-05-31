@@ -10,7 +10,8 @@ var program = require('commander'),
     outputFile = './main.browser.js',
     throttle = 300,
     throttleTimeout,
-    relativeInputFile;
+    relativeInputFile,
+    uglify = require("uglify-js");
     
 program
     .version(packageJson.version)
@@ -22,6 +23,7 @@ program
     .option('-o, --output [fileName]', 'Output File [default ' + outputFile +']',  String, outputFile)
     .option('-t, --transform [transform]', 'transform [default none]',  String)
     .option('-T, --throttle [milliseconds]', 'Minimum time between processing (milliseconds) [default ' + throttle +']', Number, throttle)
+    .option('-m, --minify', 'Minify output')
     .parse(process.argv);
 
 
@@ -39,7 +41,10 @@ function log(message){
 }
 
 function bundle(error, data) {
-    if (!hasError(error)) {
+    if (!hasError(error)) {        
+        if(program.minify){
+            data = uglify.minify(data, {fromString: true}).code;
+        }
         fs.writeFile(program.output, data, function(){
             if (!hasError(error)) {
                 log('Browserfied ' + inputFile + ' -> ' + outputFile);
