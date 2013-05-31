@@ -20,13 +20,14 @@ program
     .option('-w, --watch [path]', 'Watch Path [default ' + watchPath +']',  String, watchPath)
     .option('-i, --input [fileName]', 'Input File [default ' + inputFile +']',  String, inputFile)
     .option('-o, --output [fileName]', 'Output File [default ' + outputFile +']',  String, outputFile)
-    .option('-t, --throttle [milliseconds]', 'Minimum time between processing (milliseconds) [default ' + throttle +']', Number, throttle)
+    .option('-t, --transform [transform]', 'transform [default none]',  String)
+    .option('-T, --throttle [milliseconds]', 'Minimum time between processing (milliseconds) [default ' + throttle +']', Number, throttle)
     .parse(process.argv);
 
 
 function hasError(error){
     if(error){
-        console.log(error.stack);
+        console.log(error);
         return true;
     }
 }
@@ -62,6 +63,11 @@ function processFile(filename) {
     }
 
     var result = browserify(relativeInputFile);
+    
+    if(program.transform){
+        result.transform(program.transform);
+    }
+
     result.bundle(bundle).on('error', hasError);
 }
 
