@@ -87,10 +87,12 @@ function processFile(filename) {
 relativeInputFile = path.relative(__dirname, path.join(program.watch, program.input));
 
 log('Watching ' + program.watch + ' for changes.');
+log('Input file is ' + program.input);
 log('Output file is ' + program.output);
+
 tryToProcess();
 
-fs.watch(watchPath, function(eventType, filename){
+fs.watch(program.watch, function(eventType, filename){
     if(eventType !== 'change' || 
         path.extname(filename).toLowerCase() !== '.js' ||
         filename.toLowerCase() === path.basename(program.output).toLowerCase()){

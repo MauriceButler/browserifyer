@@ -1,6 +1,6 @@
 {
   "name": "browserifyer",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Automagicly browserify your scripts as you edit them.",
   "main": "browserifyer",
   "scripts": {
