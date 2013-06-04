@@ -11,19 +11,19 @@ var program = require('commander'),
     throttle = 300,
     throttleTimeout,
     relativeInputFile,
-    uglify = require("uglify-js");
+    uglify = require("uglify-js"),
+    btoa = require("btoa");
     
 program
     .version(packageJson.version)
     .option('-v, --verbose', 'Verbose output')
-    // TODO: Add debud flag to browserify call
-    // .option('-d, --debug', 'Browserify in debug mode')
+    .option('-d, --debug', 'Browserify in debug mode (generate source maps)', Boolean, false)
+    .option('-m, --minify', 'Minify output')
     .option('-w, --watch [path]', 'Watch Path [default ' + watchPath +']',  String, watchPath)
     .option('-i, --input [fileName]', 'Input File [default ' + inputFile +']',  String, inputFile)
     .option('-o, --output [fileName]', 'Output File [default ' + outputFile +']',  String, outputFile)
     .option('-t, --transform [transform]', 'transform [default none]',  String)
     .option('-T, --throttle [milliseconds]', 'Minimum time between processing (milliseconds) [default ' + throttle +']', Number, throttle)
-    .option('-m, --minify', 'Minify output')
     .parse(process.argv);
 
 
@@ -41,13 +41,31 @@ function log(message){
 }
 
 function bundle(error, data) {
-    if (!hasError(error)) {        
+    if (!hasError(error)) {    
+
         if(program.minify){
-            data = uglify.minify(data, {fromString: true}).code;
+            var options = {
+                fromString: true
+            },
+            ugly;
+
+            if(program.debug){
+                options.outSourceMap = program.output + '.map';
+              //  options.inSourceMap = program.input;
+            }
+
+            ugly = uglify.minify(data, options);
+
+            data = ugly.code;
+
+            if(program.debug){
+                data += ';//@ sourceMappingURL=data:application/json;base64,' + btoa(ugly.map);
+            }
+
         }
         fs.writeFile(program.output, data, function(){
             if (!hasError(error)) {
-                log('Browserfied ' + inputFile + ' -> ' + outputFile);
+                log('Browserfied ' + program.input + ' -> ' + program.output);
             }
         });
     }
@@ -67,17 +85,20 @@ function processFile(filename) {
         log('Processing triggered by save on: ' + filename);
     }
 
-    var result = browserify(relativeInputFile);
+    var result = browserify(relativeInputFile),
+        options = {
+            debug: program.debug
+        };
     
     if(program.transform){
         result.transform(program.transform);
     }
 
-    result.bundle(bundle).on('error', hasError);
+    result.bundle(options, bundle).on('error', hasError);
 }
 
 relativeInputFile = path.relative(__dirname, path.join(program.watch, program.input));
-console.log(relativeInputFile);
+
 log('Watching ' + program.watch + ' for changes.');
 log('Output file is ' + program.output);
 tryToProcess();

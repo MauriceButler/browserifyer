@@ -1,6 +1,6 @@
 {
   "name": "browserifyer",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Automagicly browserify your scripts as you edit them.",
   "main": "browserifyer",
   "scripts": {
@@ -18,9 +18,10 @@
   "author": "Maurice Butler <maurice.butler@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "commander": ">=1.1.1",
-    "browserify" : ">=2.13.2",
-    "uglify-js":">=2.3.6"
+    "commander": "1.1.x",
+    "browserify" : "2.13.x",
+    "uglify-js" : "2.3.x",
+    "btoa" : "1.1.x"
   },
   "preferGlobal": "true",
   "bin": {
