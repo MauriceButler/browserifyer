@@ -11,8 +11,7 @@ var program = require('commander'),
     throttle = 300,
     throttleTimeout,
     relativeInputFile,
-    uglify = require("uglify-js"),
-    btoa = require("btoa");
+    uglify = require("uglify-js");
     
 program
     .version(packageJson.version)
@@ -46,23 +45,11 @@ function bundle(error, data) {
         if(program.minify){
             var options = {
                 fromString: true
-            },
-            ugly;
+            };
 
-            if(program.debug){
-                options.outSourceMap = program.output + '.map';
-              //  options.inSourceMap = program.input;
-            }
-
-            ugly = uglify.minify(data, options);
-
-            data = ugly.code;
-
-            if(program.debug){
-                data += ';//@ sourceMappingURL=data:application/json;base64,' + btoa(ugly.map);
-            }
-
+            data = uglify.minify(data, options).code;
         }
+
         fs.writeFile(program.output, data, function(){
             if (!hasError(error)) {
                 log('Browserfied ' + program.input + ' -> ' + program.output);

@@ -1,6 +1,6 @@
 {
   "name": "browserifyer",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Automagicly browserify your scripts as you edit them.",
   "main": "browserifyer",
   "scripts": {
@@ -20,8 +20,7 @@
   "dependencies": {
     "commander": "1.1.x",
     "browserify" : "2.13.x",
-    "uglify-js" : "2.3.x",
-    "btoa" : "1.1.x"
+    "uglify-js" : "2.3.x"
   },
   "preferGlobal": "true",
   "bin": {
