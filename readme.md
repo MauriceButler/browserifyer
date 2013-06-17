@@ -1,36 +1,42 @@
-browserifer
+browserifyer
 ==========
 
-browserifer is a simple file watcher and browserif runner.
+browserifyer is a simple file watcher and browserif runner.
 
-When you save changes to a .js file being watched browserifer is automagicly run for you.
+When you save changes to a .js file being watched browserifyer is automagicly run for you.
 
 Installation
 ------------
 
-	npm install -g browserifer
+	npm install -g browserifyer
 	
 	
 Usage
 -----
 
-browserifer [options]
+browserifyer [options]
 
 Options:
 
-  -h, --help               Output usage information
+  -h, --help                     output usage information
   
-  -V, --version            Output the version number
+  -V, --version                  output the version number
   
-  -v, --verbose            Verbose output
+  -v, --verbose                  Verbose output
   
-  -w, --watch [path]       Watch Path [default ./]
+  -d, --debug                    Browserify in debug mode (generate source maps)
   
-  -i, --input [fileName]   Input File [default ./main.js]
+  -m, --minify                   Minify output
   
-  -o, --output [fileName]  Output File [default ./main.browser.js]
+  -w, --watch [path]             Watch Path [default ./]
   
-  -t, --throttle [milliseconds]  Minimum time between processing (milliseconds) [default 300]
+  -i, --input [fileName]         Input File [default ./main.js]
+  
+  -o, --output [fileName]        Output File [default ./main.browser.js]
+  
+  -t, --transform [transform]    transform [default none]
+  
+  -T, --throttle [milliseconds]  Minimum time between processing (milliseconds) [default 300]
   
   
   

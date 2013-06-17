@@ -12,6 +12,8 @@ var program = require('commander'),
     throttleTimeout,
     relativeInputFile,
     uglify = require("uglify-js");
+
+program._name = 'browserifyer';
     
 program
     .version(packageJson.version)
