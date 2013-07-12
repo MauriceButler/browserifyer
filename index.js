@@ -30,7 +30,7 @@ program
 
 function hasError(error){
     if(error){
-        console.log(error);
+        console.log(error.stack || error);
         return true;
     }
 }
