@@ -10,7 +10,7 @@ var program = require('commander'),
     outputFile = './main.browser.js',
     throttle = 300,
     throttleTimeout,
-    relativeInputFile,
+    absoluteInputFile,
     uglify = require("uglify-js");
 
 program._name = 'browserifyer';
@@ -74,7 +74,7 @@ function processFile(filename) {
         log('Processing triggered by save on: ' + filename);
     }
 
-    var result = browserify(relativeInputFile),
+    var result = browserify(absoluteInputFile),
         options = {
             debug: program.debug
         };
@@ -86,7 +86,7 @@ function processFile(filename) {
     result.bundle(options, bundle).on('error', hasError);
 }
 
-relativeInputFile = path.relative(__dirname, path.join(program.watch, program.input));
+absoluteInputFile = path.join(process.cwd(), program.watch, program.input);
 
 log('Watching ' + program.watch + ' for changes.');
 log('Input file is ' + program.input);
