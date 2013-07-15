@@ -1,7 +1,7 @@
 browserifyer
 ==========
 
-browserifyer is a simple file watcher and browserif runner.
+browserifyer is a simple file watcher and browserify runner.
 
 When you save changes to a .js file being watched browserifyer is automagicly run for you.
 
