@@ -1,18 +1,17 @@
-browserifyer
-==========
+#browserifyer
+
+## FYI I WOULDNT USE THIS ANY MORE USE [GULP](http://gulpjs.com/) AS A WATCHER INSTEAD
 
 browserifyer is a simple file watcher and browserify runner.
 
 When you save changes to a .js file being watched browserifyer is automagicly run for you.
 
-Installation
-------------
+##Installation
 
 	npm install -g browserifyer
 	
 	
-Usage
------
+##Usage
 
 browserifyer [options]
 
@@ -40,7 +39,6 @@ Options:
   
   
   
-Licence
--------
+##Licence
 
 MIT
