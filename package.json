@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MauriceButler/browserifyer.git"
+    "url": "git+https://github.com/MauriceButler/browserifyer.git"
   },
   "keywords": [
     "browserify",
@@ -19,11 +19,15 @@
   "license": "MIT",
   "dependencies": {
     "commander": "1.1.x",
-    "browserify" : "2.13.x",
-    "uglify-js" : "2.3.x"
+    "browserify": "2.13.x",
+    "uglify-js": "2.3.x"
   },
   "preferGlobal": "true",
   "bin": {
     "browserifyer": "index.js"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/MauriceButler/browserifyer/issues"
+  },
+  "homepage": "https://github.com/MauriceButler/browserifyer#readme"
 }
